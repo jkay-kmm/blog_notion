@@ -1,8 +1,7 @@
 // import { XIcon } from "@heroicons/react/outline";
-import { useEffect, useState } from "react";
+import React from "react";
 
 const Footer = () => {
-  const [showBanner, toogleShowBanner] = useState(false);
 
   // useEffect(() => {
   //   setTimeout(() => {
@@ -20,14 +19,14 @@ const Footer = () => {
             className="text-blue-600"
             target="_blank"
           >
-            @thanhledev
+            @trungnguyendev
           </a>
         </p>
       </div>
       <div
         className={[
           "fixed z-50 inset-x-0 pb-2 sm:pb-5 transition-all",
-          showBanner ? "bottom-0 opacity-100" : "bottom-[-30px] opacity-0",
+          "bottom-0 opacity-100",
         ].join(" ")}
       >
         <div className="px-2 mx-auto max-w-7xl sm:px-6 lg:px-8">

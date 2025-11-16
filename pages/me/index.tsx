@@ -17,13 +17,13 @@ const MePage = () => {
         <br />
         <div className="mt-4">
           <Image
-            src="/me.png"
+            src="/me.jpg"
             alt="me"
             className="rounded-md"
             width="60"
             height="60"
           />
-          <div className="text-lg font-medium">Thanh Le</div>
+          <div className="text-lg font-medium">Trung Nguyen</div>
         </div>
       </div>
 
@@ -66,7 +66,7 @@ const MePage = () => {
           <div>
             <p className="underline ">My hobbies?</p>
             <p className="">
-              Running 🏃‍♂️, trekking 🧗‍♂️, Dota 2, lost in my thought while riding
+              Running 🏃‍♂️, trekking 🧗‍♂️, Class of Clash, lost in my thought while riding
               🚴‍♂️
             </p>
           </div>
@@ -91,31 +91,31 @@ const MePage = () => {
           >
             Github
           </a>
-          <a
+          {/* <a
             className="text-indigo-600"
             href="https://twitter.com/thanhledev"
             target="_blank"
             rel="noopener noreferrer"
           >
             Twitter
-          </a>
+          </a> */}
           <a
             className="text-indigo-600"
-            href="mailto:mihthanh27@gmail.com"
+            href="mailto:nguyenthanhtrungtt20@gmail.com"
             target="_blank"
             rel="noopener noreferrer"
           >
             Email
           </a>
 
-          <a
+          {/* <a
             className="text-indigo-600"
             href="https://app.cal.com/thanhle"
             target="_blank"
             rel="noopener noreferrer"
           >
             Meet me
-          </a>
+          </a> */}
         </div>
       </div>
 

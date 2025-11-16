@@ -1,6 +1,7 @@
 import Head from "next/head";
-import { AppProps } from "next/app";
-import splitbee from "@splitbee/web";
+import type { AppProps } from "next/app";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import { appWithTranslation } from "next-i18next";
@@ -10,19 +11,27 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "../styles/globals.css";
 
-splitbee.init({
-  scriptUrl: "/bee.js",
-  apiUrl: "/_hive",
-});
-
 // Create a client
 const queryClient = new QueryClient();
 
 function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      // Your analytics code here
+    };
+
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
+
   return (
     <div>
       <Head>
-        <title>ThanhLe Blog - Homepage</title>
+        <title>TrungNguyen Blog - Homepage</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="icon" type="image/x-icon" href="/assets/favicon.png"></link>
         <script

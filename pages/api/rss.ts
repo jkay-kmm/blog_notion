@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { getAllPosts } from '..'
 
 const metadata = {
-  title: 'Thanh Le Blog',
+  title: 'Trung Nguyen Blog',
   description: 'I share about Frontend, Engineer and some thought in Product and Life 😴',
   link: 'https://thanhle.blog',
 }

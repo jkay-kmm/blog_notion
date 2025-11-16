@@ -1,0 +1,19 @@
+{
+  "reading_list": {
+    "description": "Here are some books I've read and recommend:",
+    "books": [
+      {
+        "title": "Atomic Habits",
+        "author": "James Clear",
+        "description": "An easy & proven way to build good habits & break bad ones",
+        "link": "https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/0735211299"
+      },
+      {
+        "title": "The Psychology of Money",
+        "author": "Morgan Housel",
+        "description": "Timeless lessons on wealth, greed, and happiness",
+        "link": "https://www.amazon.com/Psychology-Money-Timeless-lessons-happiness/dp/0857197681"
+      }
+    ]
+  }
+} 

@@ -4,14 +4,12 @@ import { GetStaticProps } from "next";
 import Head from "next/head";
 import { flatten } from "lodash-es";
 
-const NOTION_BLOG_ID =
-  process.env.NOTION_BLOG_ID || "c0a9456d6fa04bb2af554a310ac7b5ff";
+const NOTION_BLOG_ID = process.env.NOTION_BLOG_ID;
+if (!NOTION_BLOG_ID) {
+  console.error('NOTION_BLOG_ID is not defined in environment variables');
+}
 
-const NOTION_BLOG_ID2 = "226164aaefda48579dda04761f51f39e";
-const blogIds = [
-  "c0a9456d6fa04bb2af554a310ac7b5ff",
-  "226164aaefda48579dda04761f51f39e",
-];
+const blogIds = [NOTION_BLOG_ID].filter(Boolean);
 
 type PostStatus = "Published" | "Draft";
 export type Post = {
@@ -34,12 +32,30 @@ export const getAllPosts = async ({
   locale = "",
   includeDraft = false,
 }): Promise<Post[]> => {
-  const postData = await Promise.all(
-    blogIds.map((blogId) =>
-      fetch(`https://notion.thanhle.workers.dev/v1/table/${blogId}`)
-        .then((res) => res.json())
-        .then((res) =>
-          res
+  try {
+    console.log('Fetching posts with blogIds:', blogIds);
+    
+    const postData = await Promise.all(
+      blogIds.map(async (blogId) => {
+        try {
+          console.log('Fetching data for blogId:', blogId);
+          const response = await fetch(`http://localhost:3000/api/notion?id=${blogId}`);
+          
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error('API Error Response:', errorText);
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          const data = await response.json();
+          console.log('Received data for blogId:', blogId, data);
+          
+          if (!Array.isArray(data)) {
+            console.error('Invalid data format:', data);
+            return [];
+          }
+          
+          return data
             .filter((row: Post) => includeDraft || row.status === "Published")
             .filter((row: Post) => {
               return locale
@@ -47,17 +63,25 @@ export const getAllPosts = async ({
                   ? row.lang === locale
                   : true
                 : true;
-            })
-        )
-    )
-  );
+            });
+        } catch (error) {
+          console.error(`Error fetching data for blogId ${blogId}:`, error);
+          return [];
+        }
+      })
+    );
 
-  const allPost = flatten(postData).sort(
-    (a: Post, b: Post) =>
-      dayjs(b.date, "YYYY-MM-DD").unix() - dayjs(a.date, "YYYY-MM-DD").unix()
-  );
+    const allPost = flatten(postData).sort(
+      (a: Post, b: Post) =>
+        dayjs(b.date, "YYYY-MM-DD").unix() - dayjs(a.date, "YYYY-MM-DD").unix()
+    );
 
-  return allPost;
+    console.log('Final posts:', allPost);
+    return allPost;
+  } catch (error) {
+    console.error("Error in getAllPosts:", error);
+    return [];
+  }
 };
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {

@@ -298,11 +298,16 @@ const BlogPost: React.FC<{ post: Post; blocks: any }> = ({ post, blocks }) => {
 };
 
 export async function getStaticPaths() {
-  // const table = await getAllPosts({ locale });
+  // Lấy một số bài viết phổ biến để pre-generate
+  const posts = await getAllPosts({ locale: "", includeDraft: false });
+  const paths = posts.slice(0, 10).map((post) => ({
+    params: { slug: post.slug },
+    locale: post.lang,
+  }));
+
   return {
-    // paths: table.map((row) => `/blog/${row.slug}`),
-    paths: [],
-    fallback: "blocking",
+    paths,
+    fallback: "blocking", // Tạo trang mới khi cần
   };
 }
 

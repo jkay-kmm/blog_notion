@@ -6,9 +6,9 @@ import Link from "next/link";
 import ThemeSwitcher from "../themeSwitcher";
 
 const user = {
-  name: "Thanh Le",
-  email: "mihthanh27@gmail.com",
-  imageUrl: "/me.png",
+  name: "Trung Nguyen",
+  email: "nguyenthanhtrungtt20@gmail.com",
+  imageUrl: "/me.jpg",
 };
 const navigation = [
   { name: "📝 Blog", href: "/" },
@@ -48,11 +48,11 @@ export default function Header() {
               <div className="flex">
                 <div className="flex items-center flex-shrink-0">
                   <Link href="/">
-                    <a className="text-gray-900 dark:text-gray-50">Thanh Le</a>
+                    <a className="text-gray-900 dark:text-gray-50">Trung Nguyen</a>
                   </Link>
                 </div>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-                  {navigation.map((item, index) => (
+                  {navigation.map((item) => (
                     <Link key={item.name} href={item.href}>
                       <a
                         className={classNames(
@@ -137,7 +137,7 @@ export default function Header() {
                       <a className="flex items-center max-w-xs text-sm bg-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <span className="sr-only">Open user menu</span>
                         <Image
-                          src="/me.png"
+                          src="/me.jpg"
                           className="rounded-md"
                           alt="me"
                           width="32"
@@ -230,7 +230,7 @@ export default function Header() {
               <div className="flex items-center px-4">
                 <div className="flex-shrink-0">
                   <Image
-                    src="/me.png"
+                    src="/me.jpg"
                     alt="me"
                     className="rounded-md"
                     width="40"

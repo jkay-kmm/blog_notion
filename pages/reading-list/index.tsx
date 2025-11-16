@@ -61,9 +61,9 @@ function BlogList() {
   };
 
   const readingList = useMemo(() => {
-    console.log(data?.pages || []);
-    return (data?.pages || []).reduce((prev, curPage) => {
-      return [...prev, ...curPage.items];
+    if (!data?.pages) return [];
+    return data.pages.reduce((prev, curPage) => {
+      return [...prev, ...(curPage?.items || [])];
     }, []);
   }, [data]);
 
@@ -91,7 +91,6 @@ function BlogList() {
             name="search"
             id="search"
             ref={searchInputRef}
-            // value={keyword}
             onKeyPress={handleChangeKeyword}
             placeholder="Quick search"
             className="block w-full p-3 pr-12 text-lg border-gray-300 rounded-md shadow-sm dark:text-gray-700 focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-100"
@@ -103,7 +102,7 @@ function BlogList() {
           </div>
         </div>
 
-        <Switch.Group as="div" className="flex items-center mt-4 ml-4 md:mt-0">
+        <Switch.Group>
           <Switch
             checked={enabledEditor}
             onChange={setEnabledEditor}
@@ -128,7 +127,7 @@ function BlogList() {
         </Switch.Group>
       </div>
 
-      {isLoading && (
+      {isLoading ? (
         <div className="flex justify-center my-20">
           <div role="status">
             <svg
@@ -150,63 +149,64 @@ function BlogList() {
             <span className="sr-only">Loading...</span>
           </div>
         </div>
-      )}
-      <div className="grid justify-around grid-cols-1 gap-4 px-2 align-top gap-x-8 md:grid-cols-2 lg:grid-cols-3">
-        {readingList.map((item: any) => (
-          <div className="w-full mx-auto mb-5 bg-white border border-gray-200 rounded-lg shadow-md dark:border-gray-700 dark:bg-gray-800">
-            <a href={item.link} target="_blank">
-              <img
-                className="object-cover w-full h-56 rounded-t-lg"
-                loading="lazy"
-                src={
-                  item?.cover ||
-                  "https://flowbite.com/docs/images/blog/image-1.jpg"
-                }
-                alt=""
-              />
-            </a>
-            <div className="p-5">
+      ) : (
+        <div>
+          {readingList.map((item: any) => (
+            <div key={item._id} className="w-full mx-auto mb-5 bg-white border border-gray-200 rounded-lg shadow-md dark:border-gray-700 dark:bg-gray-800">
               <a href={item.link} target="_blank">
-                <h5 className="mb-1 text-lg font-bold tracking-tight text-gray-900 dark:text-white">
-                  {item.title}
-                </h5>
+                <img
+                  className="object-cover w-full h-56 rounded-t-lg"
+                  loading="lazy"
+                  src={
+                    item?.cover ||
+                    "https://flowbite.com/docs/images/blog/image-1.jpg"
+                  }
+                  alt=""
+                />
               </a>
-              <div className="mb-1 space-x-1">
-                {(item?.tags || [])
-                  .filter((tag: string) => tag !== "must read")
-                  .map((tag: string) => (
-                    <span
-                      key={tag}
-                      className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-800"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-              </div>
-              {(item?.tags || []).includes("must read") && (
-                <div className="flex items-center mb-2 text-sm font-semibold text-emerald-500">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="inline-block w-5 h-5 mr-1 "
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Must read
+              <div className="p-5">
+                <a href={item.link} target="_blank">
+                  <h5 className="mb-1 text-lg font-bold tracking-tight text-gray-900 dark:text-white">
+                    {item.title}
+                  </h5>
+                </a>
+                <div className="mb-1 space-x-1">
+                  {(item?.tags || [])
+                    .filter((tag: string) => tag !== "must read")
+                    .map((tag: string) => (
+                      <span
+                        key={tag}
+                        className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-800"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                 </div>
-              )}
-              <p className="mb-3 text-sm font-normal text-gray-700 dark:text-gray-300 line-clamp-3">
-                {item.excerpt}
-              </p>
+                {item.tags?.includes("must read") && (
+                  <div className="flex items-center mb-2 text-sm font-semibold text-emerald-500">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="inline-block w-5 h-5 mr-1"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    Must read
+                  </div>
+                )}
+                <p className="mb-3 text-sm font-normal text-gray-700 dark:text-gray-300 line-clamp-3">
+                  {item.excerpt}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
       <div className="flex justify-center">
         <button
           className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
